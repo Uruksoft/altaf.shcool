@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية - مدرسة الطف الابتدائية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-left: 10px;
+        }
+        
+        .school-info h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .school-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-right: 15px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .login-btn {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #f39c12;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin-top: 0;
+        }
+        
+        .hero-content {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: -30px auto 30px;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-group label {
+            margin-left: 10px;
+            font-weight: 500;
+        }
+        
+        .filter-select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-icon {
+            margin-left: 10px;
+            font-size: 20px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .news-item, .timetable-day, .exam-item, .absence-item, .top-student-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .news-item:last-child, 
+        .timetable-day:last-child, 
+        .exam-item:last-child,
+        .absence-item:last-child,
+        .top-student-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .news-date {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .news-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .timetable th {
+            background-color: #f5f5f5;
+            padding: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .timetable td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .exam-subject, .absence-student, .top-student-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .exam-date, .absence-date, .top-student-grade {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin: 5px 0;
+        }
+        
+        .exam-desc, .absence-reason {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .top-student-rank {
+            display: inline-block;
+            background-color: #f1c40f;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            margin-left: 5px;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .footer-logo {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo-container {
+                margin-bottom: 10px;
+            }
+            
+            .nav-links {
+                margin-top: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 5px;
+            }
+            
+            .hero {
+                height: 50vh;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="https://a.top4top.io/p_34313kbyo1.jpg" class="logo" alt="شعار المدرسة">
+                <div class="school-info">
+                    <h1>مدرسة الطف الابتدائية</h1>
+                    <p>نظام الإدارة المدرسية الإلكتروني</p>
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#news">أخبار المدرسة</a></li>
+                <li><a href="#timetable">جدول الحصص</a></li>
+                <li><a href="#exams">الامتحانات</a></li>
+                <li><a href="#absences">الغيابات</a></li>
+                <li><a href="#top-students">المتفوقون</a></li>
+                <li><a href="login.html" class="login-btn">تسجيل الدخول</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h2>مرحباً بكم في مدرسة الطف الابتدائية</h2>
+            <p>منصة إلكترونية متكاملة للتواصل بين المدرسة والطلاب وأولياء الأمور</p>
+        </div>
+    </section>
+    
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>الصف:</label>
+            <select class="filter-select" id="grade-select">
+                <option value="">اختر الصف</option>
+                <option value="1">الصف الأول</option>
+                <option value="2">الصف الثاني</option>
+                <option value="3">الصف الثالث</option>
+                <option value="4">الصف الرابع</option>
+                <option value="5">الصف الخامس</option>
+                <option value="6">الصف السادس</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>الشعبة:</label>
+            <select class="filter-select" id="class-select">
+                <option value="">اختر الشعبة</option>
+                <option value="A">شعبة أ</option>
+                <option value="B">شعبة ب</option>
+                <option value="C">شعبة ج</option>
+            </select>
+        </div>
+        
+        <button class="login-btn" id="apply-filters">تطبيق</button>
+    </div>
+    
+    <div class="main-container">
+        <!-- قسم أخبار المدرسة -->
+        <section id="news">
+            <h2 class="section-title">
+                <i class="fas fa-newspaper"></i>
+                أخبار المدرسة والنشاطات
+            </h2>
+            
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <h3>أخبار ونشاطات</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="news-item">
+                            <h4 class="news-title">احتفالية يوم العلم</h4>
+                            <div class="news-date">15 مارس 2023</div>
+                            <p class="news-content">تحت شعار "بالعلم نبني المستقبل"، تقيم المدرسة احتفالية يوم العلم يوم الأربعاء الموافق 20/3/2023 بمشاركة جميع الطلاب والمعلمين.</p>
+                        </div>
+                        <div class="news-item">
+                            <h4 class="news-title">مسابقة القرآن الكريم</h4>
+                            <div class="news-date">10 مارس 2023</div>
+                            <p class="news-content">تعلن المدرسة عن بدء التسجيل في مسابقة القرآن الكريم للعام الدراسي الحالي، والتي ستقام في نهاية شهر مارس الجاري.</p>
+                        </div>
+                        <div class="news-item">
+                            <h4 class="news-title">رحلة علمية</h4>
+                            <div class="news-date">5 مارس 2023</div>
+                            <p class="news-content">سيتم تنظيم رحلة علمية لطلاب الصفوف العليا إلى المتحف الوطني يوم الثلاثاء القادم.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم جدول الحصص -->
+                <div class="card" id="timetable">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <h3>جدول الحصص الأسبوعي - الصف الثالث أ</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="timetable-day">
+                            <h4>الأحد</h4>
+                            <table class="timetable">
+                                <tr>
+                                    <th>الحصة</th>
+                                    <th>المادة</th>
+                                    <th>المعلم</th>
+                                </tr>
+                                <tr>
+                                    <td>الأولى</td>
+                                    <td>اللغة العربية</td>
+                                    <td>أ. علي حسين</td>
+                                </tr>
+                                <tr>
+                                    <td>الثانية</td>
+                                    <td>الرياضيات</td>
+                                    <td>أ. أحمد كاظم</td>
+                                </tr>
+                                <tr>
+                                    <td>الثالثة</td>
+                                    <td>العلوم</td>
+                                    <td>أ. محمد عبدالله</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="timetable-day">
+                            <h4>الإثنين</h4>
+                            <table class="timetable">
+                                <tr>
+                                    <th>الحصة</th>
+                                    <th>المادة</th>
+                                    <th>المعلم</th>
+                                </tr>
+                                <tr>
+                                    <td>الأولى</td>
+                                    <td>اللغة الإنجليزية</td>
+                                    <td>أ. سميرة محمد</td>
+                                </tr>
+                                <tr>
+                                    <td>الثانية</td>
+                                    <td>الاجتماعيات</td>
+                                    <td>أ. حسن علي</td>
+                                </tr>
+                                <tr>
+                                    <td>الثالثة</td>
+                                    <td>التربية الفنية</td>
+                                    <td>أ. كامل عبدالرسول</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- قسم الامتحانات -->
+        <section id="exams">
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-list"></i>
+                مواعيد الامتحانات - الصف الثالث أ
+            </h2>
+            
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-check card-icon"></i>
+                        <h3>الامتحانات الشهرية</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="exam-item">
+                            <h4 class="exam-subject">امتحان اللغة العربية</h4>
+                            <div class="exam-date">20 مارس 2023 - 9:00 صباحاً</div>
+                            <p class="exam-desc">الوحدة الأولى والثانية من الكتاب المدرسي</p>
+                        </div>
+                        <div class="exam-item">
+                            <h4 class="exam-subject">امتحان الرياضيات</h4>
+                            <div class="exam-date">22 مارس 2023 - 9:00 صباحاً</div>
+                            <p class="exam-desc">الفصول 1 إلى 3 - عمليات الجمع والطرح</p>
+                        </div>
+                        <div class="exam-item">
+                            <h4 class="exam-subject">امتحان العلوم</h4>
+                            <div class="exam-date">25 مارس 2023 - 9:00 صباحاً</div>
+                            <p class="exam-desc">الوحدة الأولى - الكائنات الحية</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم الغيابات -->
+                <div class="card" id="absences">
+                    <div class="card-header">
+                        <i class="fas fa-user-times card-icon"></i>
+                        <h3>الغيابات اليومية - الصف الثالث أ</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="absence-item">
+                            <h4 class="absence-student">محمد علي كاظم</h4>
+                            <div class="absence-date">15 مارس 2023</div>
+                            <p class="absence-reason">غياب بإذن ولي الأمر - مرض</p>
+                        </div>
+                        <div class="absence-item">
+                            <h4 class="absence-student">حسن عبد الله سعد</h4>
+                            <div class="absence-date">15 مارس 2023</div>
+                            <p class="absence-reason">غياب بإذن إداري - سفر</p>
+                        </div>
+                        <div class="absence-item">
+                            <h4 class="absence-student">علي حسين محمد</h4>
+                            <div class="absence-date">14 مارس 2023</div>
+                            <p class="absence-reason">غياب بدون إذن</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم المتفوقين -->
+                <div class="card" id="top-students">
+                    <div class="card-header">
+                        <i class="fas fa-trophy card-icon"></i>
+                        <h3>الطلاب المتفوقون - الصف الثالث أ</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="top-student-item">
+                            <h4 class="top-student-name">
+                                علي أحمد حسن
+                                <span class="top-student-rank">1</span>
+                            </h4>
+                            <div class="top-student-grade">معدل 98%</div>
+                        </div>
+                        <div class="top-student-item">
+                            <h4 class="top-student-name">
+                                زهراء محمد كريم
+                                <span class="top-student-rank">2</span>
+                            </h4>
+                            <div class="top-student-grade">معدل 96%</div>
+                        </div>
+                        <div class="top-student-item">
+                            <h4 class="top-student-name">
+                                حسين عبد الرسول
+                                <span class="top-student-rank">3</span>
+                            </h4>
+                            <div class="top-student-grade">معدل 95%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="footer">
+        <img src="https://a.top4top.io/p_34313kbyo1.jpg" class="footer-logo" alt="شعار المدرسة">
+        <p>مدرسة الطف الابتدائية للبنين - الكوفة</p>
+        <p>جميع الحقوق محفوظة &copy; 2023</p>
+        <p>بواسطة <span style="font-weight: bold;">أوروك سوفت</span> | UrukSoft</p>
+        <p>مرتضى حسين</p>
+    </footer>
+
+    <script>
+        // فلترة المحتوى حسب الصف والشعبة
+        document.getElementById('apply-filters').addEventListener('click', function() {
+            const grade = document.getElementById('grade-select').value;
+            const classVal = document.getElementById('class-select').value;
+            
+            if (grade && classVal) {
+                // هنا يمكنك إضافة كود لتحديث المحتوى حسب الصف والشعبة المحددين
+                alert(`تم اختيار الصف ${grade} - شعبة ${classVal}. سيتم تحميل البيانات المناسبة`);
+                
+                // مثال على تغيير العناوين
+                document.querySelector('#timetable h3').textContent = `جدول الحصص الأسبوعي - الصف ${getGradeName(grade)} ${classVal}`;
+                document.querySelector('#exams .section-title').innerHTML = `
+                    <i class="fas fa-clipboard-list"></i>
+                    مواعيد الامتحانات - الصف ${getGradeName(grade)} ${classVal}
+                `;
+                document.querySelector('#absences h3').textContent = `الغيابات اليومية - الصف ${getGradeName(grade)} ${classVal}`;
+                document.querySelector('#top-students h3').textContent = `الطلاب المتفوقون - الصف ${getGradeName(grade)} ${classVal}`;
+            } else {
+                alert('الرجاء اختيار الصف والشعبة');
+            }
+        });
+        
+        function getGradeName(grade) {
+            const grades = {
+                '1': 'الأول',
+                '2': 'الثاني',
+                '3': 'الثالث',
+                '4': 'الرابع',
+                '5': 'الخامس',
+                '6': 'السادس'
+            };
+            return grades[grade] || grade;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>تهيئة البيانات</title>
+</head>
+<body>
+  <button onclick="initializeData()">تهيئة البيانات الأولية</button>
+  
+  <script type="module">
+    import { db, doc, setDoc, collection, addDoc } from './firebase-config.js';
+
+    async function initializeData() {
+      // إضافة معلمين
+      await setDoc(doc(db, 'teachers', 'teacher1'), {
+        name: 'علي عبد الكريم',
+        email: 'ali@altuff.edu.iq',
+        subject: 'اللغة العربية'
+      });
+
+      // إضافة صفوف
+      await addDoc(collection(db, 'classes'), {
+        name: 'الصف الثالث الابتدائي - شعبة أ',
+        grade: '3',
+        section: 'A',
+        studentsCount: 25,
+        subject: 'اللغة العربية',
+        teacherId: 'teacher1'
+      });
+
+      // إضافة طلاب
+      const students = [
+        {
+          firstName: 'أحمد',
+          middleName: 'محمد',
+          lastName: 'حسن',
+          phone: '07801234567',
+          parentPhone: '07807654321',
+          grade: '3',
+          class: 'A'
+        },
+        // يمكنك إضافة المزيد من الطلاب
+      ];
+
+      for (const student of students) {
+        await addDoc(collection(db, 'students'), {
+          ...student,
+          fullName: `${student.firstName} ${student.middleName} ${student.lastName}`,
+          createdAt: new Date()
+        });
+      }
+
+      alert('تم تهيئة البيانات بنجاح!');
+    }
+
+    window.initializeData = initializeData;
+  </script>
+</body>
+</html>

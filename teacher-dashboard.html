@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المعلم - مدرسة الطف الابتدائية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid white;
+        }
+        
+        .school-name {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-item:hover {
+            background-color: #34495e;
+        }
+        
+        .menu-item.active {
+            background-color: #3498db;
+        }
+        
+        .menu-icon {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .welcome-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .welcome-title {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        /* إدارة الصفوف */
+        .classes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .class-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .class-title {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .students-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .student-item {
+            padding: 10px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .student-name {
+            font-weight: 500;
+        }
+        
+        .student-grade {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        /* إضافة واجب */
+        .assignment-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* إضافة امتحان */
+        .exam-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* تقويم الطلاب */
+        .grades-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .grades-table th, .grades-table td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .grades-table th {
+            background-color: #f5f5f5;
+            font-weight: 500;
+        }
+        
+        /* الإشعارات */
+        .notifications-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .notification-form {
+            margin-top: 20px;
+        }
+        
+        /* الملف الشخصي */
+        .profile-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-left: 20px;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .profile-details {
+            color: #7f8c8d;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-left: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://a.top4top.io/p_34313kbyo1.jpg" class="logo" alt="شعار المدرسة">
+            <div class="school-name">مدرسة الطف الابتدائية</div>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">م</div>
+            <div>
+                <div style="font-weight: 500;">المعلم: علي عبد الكريم</div>
+                <div style="font-size: 12px;">مادة: اللغة العربية</div>
+            </div>
+            <button class="logout-btn" onclick="window.location.href='index.html'">تسجيل الخروج</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-item active" onclick="showSection('dashboard')">
+                    <span>لوحة التحكم</span>
+                    <i class="fas fa-tachometer-alt menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('classes')">
+                    <span>إدارة الصفوف</span>
+                    <i class="fas fa-users menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('assignments')">
+                    <span>إضافة واجب</span>
+                    <i class="fas fa-book menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('exams')">
+                    <span>إضافة امتحان</span>
+                    <i class="fas fa-clipboard-list menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('grades')">
+                    <span>تقويم الطلاب</span>
+                    <i class="fas fa-chart-bar menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('notifications')">
+                    <span>الإشعارات</span>
+                    <i class="fas fa-bell menu-icon"></i>
+                </li>
+                <li class="menu-item" onclick="showSection('profile')">
+                    <span>الملف الشخصي</span>
+                    <i class="fas fa-user menu-icon"></i>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <!-- لوحة التحكم -->
+            <div id="dashboard" class="content-section active">
+                <div class="welcome-card">
+                    <h2 class="welcome-title">مرحباً بك، أستاذ علي</h2>
+                    <p>هذه لوحة التحكم الخاصة بك حيث يمكنك إدارة الصفوف وإضافة الواجبات والامتحانات وتقويم الطلاب.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                        <h3 style="color: #3498db; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                            <i class="fas fa-users" style="margin-left: 10px;"></i>
+                            الصفوف المسندة إليك
+                        </h3>
+                        <p style="font-size: 24px; font-weight: bold; text-align: center; color: #2c3e50;">3</p>
+                    </div>
+                    
+                    <div style="background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                        <h3 style="color: #3498db; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                            <i class="fas fa-book" style="margin-left: 10px;"></i>
+                            الواجبات المعلقة
+                        </h3>
+                        <p style="font-size: 24px; font-weight: bold; text-align: center; color: #2c3e50;">5</p>
+                    </div>
+                    
+                    <div style="background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                        <h3 style="color: #3498db; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                            <i class="fas fa-clipboard-list" style="margin-left: 10px;"></i>
+                            الامتحانات القادمة
+                        </h3>
+                        <p style="font-size: 24px; font-weight: bold; text-align: center; color: #2c3e50;">2</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- إدارة الصفوف -->
+            <div id="classes" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-users" style="margin-left: 10px;"></i>
+                    إدارة الصفوف
+                </h2>
+                
+                <div class="classes-container">
+                    <div class="class-card">
+                        <h3 class="class-title">الصف الثالث الابتدائي - شعبة أ</h3>
+                        <p>عدد الطلاب: 25 طالب</p>
+                        <p>مادة: اللغة العربية</p>
+                        <p>أيام الحضور: الأحد، الثلاثاء، الخميس</p>
+                        
+                        <div class="students-list">
+                            <div class="student-item">
+                                <div>
+                                    <div class="student-name">أحمد محمد حسن</div>
+                                    <div class="student-grade">المعدل: 95%</div>
+                                </div>
+                                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">التفاصيل</button>
+                            </div>
+                            <div class="student-item">
+                                <div>
+                                    <div class="student-name">حسين علي كاظم</div>
+                                    <div class="student-grade">المعدل: 90%</div>
+                                </div>
+                                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">التفاصيل</button>
+                            </div>
+                            <div class="student-item">
+                                <div>
+                                    <div class="student-name">زهراء عبد الله</div>
+                                    <div class="student-grade">المعدل: 93%</div>
+                                </div>
+                                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">التفاصيل</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <h3 class="class-title">الصف الثاني الابتدائي - شعبة ب</h3>
+                        <p>عدد الطلاب: 20 طالب</p>
+                        <p>مادة: اللغة العربية</p>
+                        <p>أيام الحضور: الإثنين، الأربعاء</p>
+                        
+                        <div class="students-list">
+                            <div class="student-item">
+                                <div>
+                                    <div class="student-name">محمد علي حسين</div>
+                                    <div class="student-grade">المعدل: 88%</div>
+                                </div>
+                                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">التفاصيل</button>
+                            </div>
+                            <div class="student-item">
+                                <div>
+                                    <div class="student-name">علي كامل عبدالله</div>
+                                    <div class="student-grade">المعدل: 85%</div>
+                                </div>
+                                <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">التفاصيل</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- إضافة واجب -->
+            <div id="assignments" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-book" style="margin-left: 10px;"></i>
+                    إضافة واجب جديد
+                </h2>
+                
+                <div class="assignment-form">
+                    <div class="form-group">
+                        <label>الصف والشعبة</label>
+                        <select class="form-control">
+                            <option>الصف الثالث الابتدائي - شعبة أ</option>
+                            <option>الصف الثاني الابتدائي - شعبة ب</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>عنوان الواجب</label>
+                        <input type="text" class="form-control" placeholder="أدخل عنوان الواجب">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تفاصيل الواجب</label>
+                        <textarea class="form-control" placeholder="أدخل تفاصيل الواجب"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>موعد التسليم</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>إرفاق ملف (اختياري)</label>
+                        <input type="file" class="form-control">
+                    </div>
+                    
+                    <button class="btn btn-primary">إضافة الواجب</button>
+                </div>
+            </div>
+            
+            <!-- إضافة امتحان -->
+            <div id="exams" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-clipboard-list" style="margin-left: 10px;"></i>
+                    إضافة امتحان جديد
+                </h2>
+                
+                <div class="exam-form">
+                    <div class="form-group">
+                        <label>الصف والشعبة</label>
+                        <select class="form-control">
+                            <option>الصف الثالث الابتدائي - شعبة أ</option>
+                            <option>الصف الثاني الابتدائي - شعبة ب</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>نوع الامتحان</label>
+                        <select class="form-control">
+                            <option>شهري</option>
+                            <option>فصلي</option>
+                            <option>نهائي</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>المادة</label>
+                        <input type="text" class="form-control" placeholder="أدخل اسم المادة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تاريخ الامتحان</label>
+                        <input type="datetime-local" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>المدة (بالدقائق)</label>
+                        <input type="number" class="form-control" placeholder="أدخل مدة الامتحان">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>الأجزاء المطلوبة</label>
+                        <textarea class="form-control" placeholder="أدخل الأجزاء المطلوبة في الامتحان"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-primary">إضافة الامتحان</button>
+                </div>
+            </div>
+            
+            <!-- تقويم الطلاب -->
+            <div id="grades" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-chart-bar" style="margin-left: 10px;"></i>
+                    تقويم الطلاب
+                </h2>
+                
+                <div class="grades-container">
+                    <div class="form-group">
+                        <label>اختر الصف والشعبة</label>
+                        <select class="form-control">
+                            <option>الصف الثالث الابتدائي - شعبة أ</option>
+                            <option>الصف الثاني الابتدائي - شعبة ب</option>
+                        </select>
+                    </div>
+                    
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>الواجبات (30%)</th>
+                                <th>الامتحانات (50%)</th>
+                                <th>المشاركة (20%)</th>
+                                <th>المجموع</th>
+                                <th>التقدير</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>أحمد محمد حسن</td>
+                                <td>28</td>
+                                <td>45</td>
+                                <td>18</td>
+                                <td>91</td>
+                                <td>ممتاز</td>
+                            </tr>
+                            <tr>
+                                <td>حسين علي كاظم</td>
+                                <td>25</td>
+                                <td>40</td>
+                                <td>17</td>
+                                <td>82</td>
+                                <td>جيد جداً</td>
+                            </tr>
+                            <tr>
+                                <td>زهراء عبد الله</td>
+                                <td>27</td>
+                                <td>42</td>
+                                <td>19</td>
+                                <td>88</td>
+                                <td>جيد جداً</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <button class="btn btn-primary" style="margin-top: 15px;">حفظ التعديلات</button>
+                </div>
+            </div>
+            
+            <!-- الإشعارات -->
+            <div id="notifications" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-bell" style="margin-left: 10px;"></i>
+                    الإشعارات
+                </h2>
+                
+                <div class="notifications-container">
+                    <h3 style="color: #3498db; margin-bottom: 15px;">الإشعارات المرسلة</h3>
+                    
+                    <div style="border: 1px solid #eee; border-radius: 5px; padding: 15px; margin-bottom: 20px;">
+                        <div style="font-weight: 500;">موعد تسليم واجب اللغة العربية</div>
+                        <div style="color: #7f8c8d; font-size: 13px; margin: 5px 0;">أرسل في: 15/03/2023 - إلى: الصف الثالث أ</div>
+                        <p style="color: #555;">الرجاء حل التمارين من الصفحة 12 إلى 15 في كتاب النشاط وتسليمها غداً</p>
+                    </div>
+                    
+                    <div style="border: 1px solid #eee; border-radius: 5px; padding: 15px; margin-bottom: 20px;">
+                        <div style="font-weight: 500;">موعد امتحان الشهر الأول</div>
+                        <div style="color: #7f8c8d; font-size: 13px; margin: 5px 0;">أرسل في: 10/03/2023 - إلى: الصف الثاني ب</div>
+                        <p style="color: #555;">سيتم عقد امتحان اللغة العربية للشهر الأول يوم الأربعاء القادم الموافق 20/3/2023</p>
+                    </div>
+                    
+                    <div class="notification-form">
+                        <h3 style="color: #3498db; margin-bottom: 15px;">إرسال إشعار جديد</h3>
+                        
+                        <div class="form-group">
+                            <label>الصف والشعبة</label>
+                            <select class="form-control">
+                                <option>الصف الثالث الابتدائي - شعبة أ</option>
+                                <option>الصف الثاني الابتدائي - شعبة ب</option>
+                                <option>جميع الصفوف</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>عنوان الإشعار</label>
+                            <input type="text" class="form-control" placeholder="أدخل عنوان الإشعار">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>نص الإشعار</label>
+                            <textarea class="form-control" placeholder="أدخل نص الإشعار"></textarea>
+                        </div>
+                        
+                        <button class="btn btn-primary">إرسال الإشعار</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الملف الشخصي -->
+            <div id="profile" class="content-section">
+                <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                    <i class="fas fa-user" style="margin-left: 10px;"></i>
+                    الملف الشخصي
+                </h2>
+                
+                <div class="profile-container">
+                    <div class="profile-avatar">ع</div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">علي عبد الكريم</h3>
+                        <div class="profile-details">
+                            <p><strong>البريد الإلكتروني:</strong> ali.teacher@al-tuff.edu.iq</p>
+                            <p><strong>رقم الهاتف:</strong> 07801234567</p>
+                            <p><strong>المادة:</strong> اللغة العربية</p>
+                            <p><strong>الصفوف:</strong> الثالث أ، الثاني ب</p>
+                            <p><strong>تاريخ الانضمام:</strong> 01/09/2018</p>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="margin-top: 15px;">تعديل الملف الشخصي</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>مدرسة الطف الابتدائية للبنين - الكوفة</p>
+        <p>بواسطة <span style="font-weight: bold;">أوروك سوفت</span> | UrukSoft</p>
+        <p>مرتضى حسين</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إزالة التنشيط من جميع عناصر القائمة
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // إظهار القسم المحدد
+            document.getElementById(sectionId).classList.add('active');
+            
+            // تنشيط عنصر القائمة المحدد
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+    <script type="module">
+  import { db, collection, getDocs, addDoc } from './firebase-config.js';
+
+  // جلب الصفوف
+  async function loadClasses() {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'classes'));
+      const classesContainer = document.querySelector('.classes-container');
+      classesContainer.innerHTML = '';
+      
+      querySnapshot.forEach(doc => {
+        const cls = doc.data();
+        classesContainer.innerHTML += `
+          <div class="class-card">
+            <h3 class="class-title">${cls.name}</h3>
+            <p>عدد الطلاب: ${cls.studentsCount}</p>
+            <p>المادة: ${cls.subject}</p>
+            <button onclick="viewClass('${doc.id}')">عرض التفاصيل</button>
+          </div>
+        `;
+      });
+    } catch (error) {
+      console.error('Error loading classes:', error);
+      alert('حدث خطأ أثناء جلب بيانات الصفوف');
+    }
+  }
+
+  // إضافة واجب
+  async function addAssignment() {
+    const assignmentData = {
+      title: document.querySelector('#assignments input[type="text"]').value,
+      description: document.querySelector('#assignments textarea').value,
+      dueDate: document.querySelector('#assignments input[type="date"]').value,
+      class: document.querySelector('#assignments select').value,
+      createdAt: new Date()
+    };
+
+    try {
+      await addDoc(collection(db, 'assignments'), assignmentData);
+      alert('تم إضافة الواجب بنجاح!');
+      document.querySelector('#assignments form').reset();
+    } catch (error) {
+      alert('حدث خطأ: ' + error.message);
+    }
+  }
+
+  // جلب الطلاب
+  async function viewClass(classId) {
+    try {
+      const classDoc = await getDoc(doc(db, 'classes', classId));
+      const studentsQuery = query(
+        collection(db, 'students'),
+        where('grade', '==', classDoc.data().grade),
+        where('class', '==', classDoc.data().section)
+      );
+      
+      const studentsSnapshot = await getDocs(studentsQuery);
+      // عرض الطلاب في مربع حوار أو صفحة جديدة
+    } catch (error) {
+      console.error('Error loading class:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadClasses);
+  document.querySelector('#assignments button').addEventListener('click', addAssignment);
+  window.viewClass = viewClass;
+</script>
+</body>
+</html>

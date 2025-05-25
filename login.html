@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام مدرسة الطف الابتدائية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .object {
+            position: absolute;
+            opacity: 0.7;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .welcome-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            align-self: center;
+        }
+        
+        .school-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .school-motto {
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features i {
+            margin-left: 10px;
+            color: #f1c40f;
+        }
+        
+        .login-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            color: #7f8c8d;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .form-container {
+            display: none;
+        }
+        
+        .form-container.active {
+            display: block;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        /* Animation delays for floating objects */
+        .object:nth-child(1) { animation-delay: 0s; top: 10%; left: 5%; }
+        .object:nth-child(2) { animation-delay: 1s; top: 70%; left: 15%; }
+        .object:nth-child(3) { animation-delay: 2s; top: 30%; left: 80%; }
+        .object:nth-child(4) { animation-delay: 3s; top: 80%; left: 70%; }
+        .object:nth-child(5) { animation-delay: 4s; top: 20%; left: 40%; }
+        .object:nth-child(6) { animation-delay: 5s; top: 60%; left: 50%; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background">
+        <!-- Floating school objects -->
+        <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" class="object" style="width: 60px;" alt="قلم">
+        <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="object" style="width: 80px;" alt="سبورة">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="object" style="width: 70px;" alt="دفتر">
+        <img src="https://cdn-icons-png.flaticon.com/512/3404/3404134.png" class="object" style="width: 50px;" alt="ممحاة">
+        <img src="https://cdn-icons-png.flaticon.com/512/3132/3132694.png" class="object" style="width: 50px;" alt="مبراة">
+        <img src="https://cdn-icons-png.flaticon.com/512/3132/3132691.png" class="object" style="width: 80px;" alt="مسطرة">
+    </div>
+    
+    <div class="main-container">
+        <div class="welcome-section">
+            <img src="https://a.top4top.io/p_34313kbyo1.jpg" class="logo" alt="شعار مدرسة الطف الابتدائية">
+            <h2 class="school-name">مدرسة الطف الابتدائية للبنين</h2>
+            <p class="school-motto">نحو تعليم مميز وبناء جيل المستقبل</p>
+            
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> نظام إلكتروني متكامل لإدارة المدرسة</li>
+                <li><i class="fas fa-check-circle"></i> متابعة الواجبات والامتحانات</li>
+                <li><i class="fas fa-check-circle"></i> تواصل مباشر بين المعلمين والطلاب</li>
+                <li><i class="fas fa-check-circle"></i> جدول الحصص الإلكتروني</li>
+                <li><i class="fas fa-check-circle"></i> نتائج الطلاب فور صدورها</li>
+            </ul>
+            
+            <div class="footer">
+                <p>بواسطة <span style="font-weight: bold;">أوروك سوفت</span> | UrukSoft</p>
+                <p>مرتضى حسين</p>
+            </div>
+        </div>
+        
+        <div class="login-section">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('student')">طالب</div>
+                <div class="tab" onclick="showTab('teacher')">معلم</div>
+            </div>
+            
+            <div id="student-form" class="form-container active">
+                <input type="tel" placeholder="رقم الهاتف" id="student-phone">
+                <button onclick="loginAsStudent()">تسجيل الدخول</button>
+                <p style="margin-top: 15px; color: #7f8c8d; text-align: center;">ليس لديك حساب؟ <a href="#" style="color: #3498db;" onclick="showRegister()">تسجيل جديد</a></p>
+            </div>
+            
+            <div id="teacher-form" class="form-container">
+                <input type="text" placeholder="اسم المستخدم" id="teacher-username">
+                <input type="password" placeholder="كلمة المرور" id="teacher-password">
+                <button onclick="loginAsTeacher()">تسجيل الدخول</button>
+            </div>
+            
+            <div id="register-form" class="form-container">
+                <h3 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">تسجيل طالب جديد</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <input type="text" placeholder="الاسم الأول" id="first-name">
+                    <input type="text" placeholder="الاسم الثاني" id="middle-name">
+                    <input type="text" placeholder="الاسم الثالث" id="last-name">
+                </div>
+                
+                <input type="text" placeholder="اللقب" id="nickname">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <select id="gender">
+                        <option value="">اختر الجنس</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                    
+                    <input type="number" placeholder="العمر" id="age" min="5" max="12">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <select id="grade">
+                        <option value="">اختر الصف</option>
+                        <option value="1">الصف الأول</option>
+                        <option value="2">الصف الثاني</option>
+                        <option value="3">الصف الثالث</option>
+                        <option value="4">الصف الرابع</option>
+                        <option value="5">الصف الخامس</option>
+                        <option value="6">الصف السادس</option>
+                    </select>
+                    
+                    <select id="class">
+                        <option value="">اختر الشعبة</option>
+                        <option value="A">شعبة أ</option>
+                        <option value="B">شعبة ب</option>
+                        <option value="C">شعبة ج</option>
+                    </select>
+                </div>
+                
+                <input type="tel" placeholder="رقم الهاتف" id="register-phone">
+                <input type="tel" placeholder="رقم ولي الأمر" id="parent-phone">
+                
+                <button onclick="registerStudent()">تسجيل الحساب</button>
+                <p style="margin-top: 15px; color: #7f8c8d; text-align: center;">لديك حساب بالفعل؟ <a href="#" style="color: #3498db;" onclick="showLogin()">تسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+  import { 
+    db, auth, collection, addDoc, getDocs, query, where,
+    signInWithEmailAndPassword, createUserWithEmailAndPassword 
+  } from './firebase-config.js';
+
+  // تسجيل الدخول كمعلم
+  window.loginAsTeacher = async function() {
+    const username = document.getElementById('teacher-username').value;
+    const password = document.getElementById('teacher-password').value;
+    
+    if (!username || !password) {
+        alert('الرجاء إدخال اسم المستخدم وكلمة المرور');
+        return;
+    }
+
+    const email = username.includes('@') ? username : `${username}@altuff.edu.iq`;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        // تخزين بيانات الجلسة
+        localStorage.setItem('currentUser', JSON.stringify({
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+            role: 'teacher',
+            lastLogin: new Date()
+        }));
+        
+        // التوجيه إلى لوحة التحكم
+        window.location.href = "teacher-dashboard.html";
+        
+    } catch (error) {
+        handleAuthError(error);
+    }
+};
+
+  // تسجيل الدخول كطالب
+  window.loginAsStudent = async function() {
+    const phone = document.getElementById('student-phone').value;
+    
+    try {
+      const q = query(collection(db, 'students'), where('phone', '==', phone));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        alert('رقم الهاتف غير مسجل');
+        showRegister();
+      } else {
+        const student = querySnapshot.docs[0].data();
+        localStorage.setItem('currentStudent', JSON.stringify(student));
+        window.location.href = "student-dashboard.html";
+      }
+    } catch (error) {
+      alert('حدث خطأ: ' + error.message);
+    }
+  };
+
+  // تسجيل طالب جديد
+ window.registerStudent = async function() {
+    const firstName = document.getElementById('first-name').value;
+    const middleName = document.getElementById('middle-name').value;
+    const lastName = document.getElementById('last-name').value;
+    const phone = document.getElementById('register-phone').value;
+    const parentPhone = document.getElementById('parent-phone').value;
+    const grade = document.getElementById('grade').value;
+    const classVal = document.getElementById('class').value;
+
+    // التحقق من الحقول المطلوبة
+    if (!firstName || !lastName || !phone || !parentPhone || !grade || !classVal) {
+        alert('الرجاء تعبئة جميع الحقول المطلوبة');
+        return;
+    }
+
+    try {
+        // إضافة وثيقة جديدة في مجموعة students
+        const docRef = await addDoc(collection(db, 'students'), {
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            fullName: `${firstName} ${middleName} ${lastName}`,
+            phone: phone,
+            parentPhone: parentPhone,
+            grade: grade,
+            class: classVal,
+            createdAt: new Date()
+        });
+        
+        alert(`تم تسجيل الطالب ${firstName} بنجاح!`);
+        showLogin(); // العودة لصفحة تسجيل الدخول
+        
+    } catch (error) {
+        console.error("Error adding student: ", error);
+        alert(`حدث خطأ: ${error.message}`);
+    }
+};
+
+  // وظائف مساعدة
+  window.showRegister = function() {
+    document.getElementById('register-form').classList.add('active');
+    document.getElementById('student-form').classList.remove('active');
+    document.getElementById('teacher-form').classList.remove('active');
+  };
+
+  window.showLogin = function() {
+    document.getElementById('register-form').classList.remove('active');
+    document.getElementById('student-form').classList.add('active');
+    document.getElementById('teacher-form').classList.remove('active');
+  };
+</script>
+<script type="module">
+  import { auth, createUserWithEmailAndPassword } from './firebase-config.js';
+
+  async function createFirstTeacher() {
+    const email = "admin@altuff.edu.iq";
+    const password = "123456";
+    
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log("تم إنشاء الحساب الإداري الأول بنجاح");
+    } catch (error) {
+      console.log("الحساب موجود بالفعل أو خطأ:", error);
+    }
+  }
+
+  // استدعاء الدالة تلقائياً عند التحميل
+  window.addEventListener('load', createFirstTeacher);
+</script>
+</body>
+<script type="module">
+  import { 
+    auth, db, collection, addDoc, query, where, getDocs,
+    signInWithEmailAndPassword, createUserWithEmailAndPassword
+  } from './firebase-config.js';
+
+  // تسجيل الدخول للمعلم
+  window.loginAsTeacher = async function() {
+    const email = document.getElementById('teacher-email').value + '@altuff.edu.iq';
+    const password = document.getElementById('teacher-password').value;
+    
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('user', JSON.stringify({
+        uid: userCredential.user.uid,
+        role: 'teacher'
+      }));
+      window.location.href = 'teacher-dashboard.html';
+    } catch (error) {
+      alert('خطأ في التسجيل: ' + error.message);
+    }
+  };
+
+  // تسجيل الطالب
+  window.registerStudent = async function() {
+    const studentData = {
+      name: document.getElementById('student-name').value,
+      phone: document.getElementById('student-phone').value,
+      parentPhone: document.getElementById('parent-phone').value,
+      grade: document.getElementById('grade').value,
+      class: document.getElementById('class').value,
+      createdAt: new Date()
+    };
+
+    try {
+      await addDoc(collection(db, 'students'), studentData);
+      alert('تم تسجيل الطالب بنجاح!');
+      showLogin();
+    } catch (error) {
+      alert('خطأ في التسجيل: ' + error.message);
+    }
+  };
+</script>
+</html>
