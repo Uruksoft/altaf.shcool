@@ -748,5 +748,31 @@
 
   document.addEventListener('DOMContentLoaded', loadStudentData);
 </script>
+<script type="module">
+import { db, collection, getDocs, query, where } from './firebase-config.js';
+
+async function loadAssignments() {
+  const student = JSON.parse(localStorage.getItem('currentStudent'));
+  if (!student) return;
+  const q = query(collection(db, 'assignments'), where('class', '==', `${student.grade}${student.class}`));
+  const qs = await getDocs(q);
+  const container = document.querySelector('.homework-container');
+  if (!container) return;
+  container.innerHTML = '';
+  qs.forEach(doc => {
+    const assignment = doc.data();
+    container.innerHTML += `
+      <div class="homework-item">
+        <div class="homework-subject">${assignment.title}</div>
+        <div class="homework-date">موعد التسليم: ${assignment.dueDate}</div>
+        <div class="homework-desc">${assignment.description}</div>
+        <span class="homework-status status-pending">قيد التنفيذ</span>
+      </div>
+    `;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadAssignments);
+</script>
 </body>
 </html>

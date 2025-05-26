@@ -624,6 +624,153 @@
             };
             return grades[grade] || grade;
         }
-    </script>
+</script>
+<script type="module">
+import { db, collection, getDocs, query, where } from './firebase-config.js';
+
+// جلب الأخبار
+async function loadNews() {
+  const container = document.querySelector('#news .card-body');
+  if (!container) return;
+  container.innerHTML = '';
+  const q = await getDocs(collection(db, 'news'));
+  q.forEach(doc => {
+    const news = doc.data();
+    container.innerHTML += `
+      <div class="news-item">
+        <h4 class="news-title">${news.title}</h4>
+        <div class="news-date">${news.date}</div>
+        <p class="news-content">${news.content}</p>
+      </div>
+    `;
+  });
+}
+
+// جلب جدول الحصص
+async function loadTimetable(grade = '3', classVal = 'A') {
+  const container = document.querySelector('#timetable .card-body');
+  if (!container) return;
+  container.innerHTML = '';
+  const timetableQuery = query(collection(db, 'timetable'), where('grade', '==', grade), where('class', '==', classVal));
+  const q = await getDocs(timetableQuery);
+  if (q.empty) {
+    container.innerHTML = '<div>لا يوجد جدول لهذا الصف والشعبة</div>';
+    return;
+  }
+  q.forEach(doc => {
+    const day = doc.data();
+    container.innerHTML += `
+      <div class="timetable-day">
+        <h4>${day.day}</h4>
+        <table class="timetable">
+          <tr>
+            <th>الحصة</th>
+            <th>المادة</th>
+            <th>المعلم</th>
+          </tr>
+          ${day.subjects.map(sub => `
+            <tr>
+              <td>${sub.period}</td>
+              <td>${sub.subject}</td>
+              <td>${sub.teacher}</td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    `;
+  });
+}
+
+// جلب الامتحانات
+async function loadExams(grade = '3', classVal = 'A') {
+  const container = document.querySelector('#exams .card-body');
+  if (!container) return;
+  container.innerHTML = '';
+  const examsQuery = query(collection(db, 'exams'), where('grade', '==', grade), where('class', '==', classVal));
+  const q = await getDocs(examsQuery);
+  if (q.empty) {
+    container.innerHTML = '<div>لا يوجد امتحانات لهذا الصف والشعبة</div>';
+    return;
+  }
+  q.forEach(doc => {
+    const exam = doc.data();
+    container.innerHTML += `
+      <div class="exam-item">
+        <h4 class="exam-subject">${exam.subject}</h4>
+        <div class="exam-date">${exam.date} - ${exam.time}</div>
+        <p class="exam-desc">${exam.details || ''}</p>
+      </div>
+    `;
+  });
+}
+
+// جلب الغيابات
+async function loadAbsences(grade = '3', classVal = 'A') {
+  const container = document.querySelector('#absences .card-body');
+  if (!container) return;
+  container.innerHTML = '';
+  const absQuery = query(collection(db, 'absences'), where('grade', '==', grade), where('class', '==', classVal));
+  const q = await getDocs(absQuery);
+  if (q.empty) {
+    container.innerHTML = '<div>لا يوجد غيابات لهذا الصف والشعبة</div>';
+    return;
+  }
+  q.forEach(doc => {
+    const abs = doc.data();
+    container.innerHTML += `
+      <div class="absence-item">
+        <h4 class="absence-student">${abs.studentName}</h4>
+        <div class="absence-date">${abs.date}</div>
+        <p class="absence-reason">${abs.reason}</p>
+      </div>
+    `;
+  });
+}
+
+// جلب المتفوقين
+async function loadTopStudents(grade = '3', classVal = 'A') {
+  const container = document.querySelector('#top-students .card-body');
+  if (!container) return;
+  container.innerHTML = '';
+  const topQuery = query(collection(db, 'top_students'), where('grade', '==', grade), where('class', '==', classVal));
+  const q = await getDocs(topQuery);
+  if (q.empty) {
+    container.innerHTML = '<div>لا يوجد متفوقين لهذا الصف والشعبة</div>';
+    return;
+  }
+  q.forEach(doc => {
+    const st = doc.data();
+    container.innerHTML += `
+      <div class="top-student-item">
+        <h4 class="top-student-name">
+          ${st.name}
+          <span class="top-student-rank">${st.rank}</span>
+        </h4>
+        <div class="top-student-grade">معدل ${st.average}%</div>
+      </div>
+    `;
+  });
+}
+
+// تحميل البيانات الافتراضية عند فتح الصفحة لأول مرة (الصف الثالث أ افتراضي)
+document.addEventListener('DOMContentLoaded', () => {
+  loadNews();
+  loadTimetable('3', 'A');
+  loadExams('3', 'A');
+  loadAbsences('3', 'A');
+  loadTopStudents('3', 'A');
+});
+
+// تحديث البيانات عند الفلترة
+window.applyFilters = function() {
+  const grade = document.getElementById('grade-select').value || '3';
+  const classVal = document.getElementById('class-select').value || 'A';
+  loadTimetable(grade, classVal);
+  loadExams(grade, classVal);
+  loadAbsences(grade, classVal);
+  loadTopStudents(grade, classVal);
+};
+document.getElementById('apply-filters').addEventListener('click', applyFilters);
+</script>
 </body>
 </html>

@@ -804,5 +804,43 @@
   document.querySelector('#assignments button').addEventListener('click', addAssignment);
   window.viewClass = viewClass;
 </script>
+<script type="module">
+import { db, collection, getDocs, addDoc } from './firebase-config.js';
+
+// جلب الصفوف
+async function loadClasses() {
+  const container = document.querySelector('.classes-container');
+  if (!container) return;
+  container.innerHTML = '';
+  const q = await getDocs(collection(db, 'classes'));
+  q.forEach(doc => {
+    const cls = doc.data();
+    container.innerHTML += `
+      <div class="class-card">
+        <h3 class="class-title">${cls.name}</h3>
+        <p>عدد الطلاب: ${cls.studentsCount}</p>
+        <p>مادة: ${cls.subject}</p>
+      </div>
+    `;
+  });
+}
+document.addEventListener('DOMContentLoaded', loadClasses);
+
+// إضافة واجب
+window.addAssignment = async function() {
+  const title = document.getElementById('assignment-title').value;
+  const description = document.getElementById('assignment-desc').value;
+  const dueDate = document.getElementById('assignment-due').value;
+  const className = document.getElementById('assignment-class').value;
+  if (!title || !dueDate || !className) {
+    alert('يرجى تعبئة جميع الحقول');
+    return;
+  }
+  await addDoc(collection(db, 'assignments'), {
+    title, description, dueDate, class: className, createdAt: new Date()
+  });
+  alert('تم إضافة الواجب!');
+};
+</script>
 </body>
 </html>
